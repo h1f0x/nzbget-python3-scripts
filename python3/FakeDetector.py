@@ -318,7 +318,7 @@ def clean_up():
         # The "data" is a raw json-string. We could use json.loads(data) to
         # parse it but json-module is slow. We parse it on our own.
         for line in data.splitlines():
-            if line.startswith('"NZBID" : '):
+            if line.startswith(b'"NZBID" : '):
                 cur_id = int(line[10:len(line)-1])
                 nzbids.append(str(cur_id))
 
