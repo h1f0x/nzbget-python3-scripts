@@ -16,7 +16,7 @@ Issue: python module 'six' not available. The docker image removes pip3 again, w
 
 - FakeDetector.py
 
-Issue: TBD
+Issue: Issue with bytes to string conversion. Can take longer to fix.
 
 Whats left to do:
 -------------
