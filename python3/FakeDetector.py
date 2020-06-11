@@ -64,7 +64,7 @@ POSTPROCESS_ERROR=94
 
 mediaExtensions = ['.mkv', '.avi', '.divx', '.xvid', '.mov', '.wmv', '.mp4', '.mpg', '.mpeg', '.vob', '.iso', '.m4v']
 
-verbose = True
+verbose = False
 
 # Start up checks
 def start_check():
@@ -182,6 +182,7 @@ def list_all_rars(dir):
                 out += "".join([chr(byte) for byte in out_tmp])
                 result = proc.returncode
                 if verbose:
+                    print(err)
                     print(out_tmp)
             except Exception as e:
                 print(('[ERROR] Failed %s: %s' % (file, e)))
@@ -249,7 +250,7 @@ def call_nzbget_direct(url_command):
     httpUrl = 'http://%s:%s/jsonrpc/%s' % (host, port, url_command);
     request = urllib.request.Request(httpUrl)
 
-    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+    base64string = base64.b64encode(bytes('%s:%s' % (username, password), 'utf-8')).decode('utf-8')
     request.add_header("Authorization", "Basic %s" % base64string)
 
     # Load data from NZBGet
@@ -279,10 +280,10 @@ def sort_inner_files():
     file_name = None
 
     for line in data.splitlines():
-        if line.startswith('"ID" : '):
+        if line.startswith(b'"ID" : '):
             cur_id = int(line[7:len(line)-1])
-        if line.startswith('"Filename" : "'):
-            cur_name = line[14:len(line)-2]
+        if line.startswith(b'"Filename" : "'):
+            cur_name = line[14:len(line)-2].decode('utf-8')
             match = regex1.match(cur_name) or regex2.match(cur_name)
             if (match):
                 cur_num = int(match.group(1))
